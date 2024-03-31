@@ -15,7 +15,7 @@ const Sidebar = () => {
     <div
       className={`${
         theme == "light" ? "bg-purple-100" : "bg-[#101113]"
-      } text-white w-14 h-screen flex flex-col justify-between py-4 items-center`}
+      } text-white w-14 fixed top-0 left-0 h-[100vh] flex flex-col justify-between py-4 items-center`}
     >
       <div>
         <img src="./logo.jpg" alt="" className="w-10" />

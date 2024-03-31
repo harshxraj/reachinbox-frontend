@@ -93,7 +93,7 @@ const InboxSidebar = () => {
 
   return (
     <div
-      className={`w-[320px] border-r-2 ${
+      className={`w-[320px] border-r-2 min-h-[100vh] ${
         theme == "dark" ? "border-white/30" : "border-black/30"
       } py-4 px-6`}
     >
@@ -141,10 +141,16 @@ const InboxSidebar = () => {
         >
           26
         </div>
-        <div className="pr-10">
+        <div
+          className={`pr-10 ${theme == "dark" ? "text-white" : "text-black"}`}
+        >
           <h1>New Replies</h1>
         </div>
-        <div className="flex items-center gap-2">
+        <div
+          className={`flex items-center gap-2  ${
+            theme == "dark" ? "text-white" : "text-black"
+          }`}
+        >
           <h1>Newest</h1>
           <IoIosArrowDown />
         </div>

@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
       <Sidebar />
       <div className="w-full flex flex-col">
         <div
-          className={`p-4 bg-[#1f1f1f] ${
+          className={`p-4 pl-20 bg-[#1f1f1f] ${
             theme == "light" && "bg-purple-100 text-slate-900"
           } text-white flex items-center justify-between`}
         >
@@ -24,7 +24,7 @@ const Layout = ({ children }) => {
           </h1>
           <SliderToggle />
         </div>
-        <div className="flex-grow">{children}</div>
+        <div className="flex-grow ml-12">{children}</div>
       </div>
     </div>
   );

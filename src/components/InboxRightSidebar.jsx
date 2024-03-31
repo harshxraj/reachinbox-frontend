@@ -13,7 +13,7 @@ const InboxRightSidebar = () => {
 
   return (
     <div
-      className={`border-l w-[300px] ${
+      className={`border-l w-[300px]  ${
         theme === "dark" ? "border-white/30" : "border-black/30"
       }  `}
     >
@@ -63,17 +63,17 @@ const InboxRightSidebar = () => {
             >
               <div className="flex justify-between">
                 <div>Name: </div>
-                <div>{selected_thread?.fromName}</div>
+                <div>{selected_thread[0]?.fromName}</div>
               </div>
 
               <div className="flex justify-between">
                 <div>Contact No: </div>
-                <div>{selected_thread?.fromName}</div>
+                <div>{+9213234343}</div>
               </div>
 
               <div className="flex justify-between">
                 <div className="text-sm">Email ID: </div>
-                <div className="text-sm">{selected_thread?.fromEmail}</div>
+                <div className="text-sm">{selected_thread[0]?.fromEmail}</div>
               </div>
 
               <div className="flex justify-between">

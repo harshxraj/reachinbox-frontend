@@ -2,20 +2,31 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { BsThreeDots } from "react-icons/bs";
 import { MdOutlineReply } from "react-icons/md";
+import { MdOutlineDeleteOutline } from "react-icons/md";
 
 import InboxSidebar from "../components/InboxSidebar";
 import { ThemeContext } from "../Context/ThemeContext";
 import InboxRightSidebar from "../components/InboxRightSidebar";
 import { getFullDayWithTime } from "../utils/getDate";
 import ReplyModal from "../components/ReplyModal";
+import DeleteModal from "../components/DeleteModal";
 
 const Inbox = () => {
   const replyButtonRef = useRef(null);
+  const deleteButtonRef = useRef(null);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [deleteModalOpen, setDeleteOpenModal] = useState(false);
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key.toLowerCase() === "r") {
         if (replyButtonRef.current) {
           replyButtonRef.current.click();
+        }
+      } else if (event.key.toLowerCase() == "d" && isOpen === false) {
+        if (deleteButtonRef.current) {
+          deleteButtonRef.current.click();
         }
       }
     };
@@ -25,13 +36,20 @@ const Inbox = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [isOpen]);
   const { theme, setTheme } = useContext(ThemeContext);
   const selected_thread = useSelector((store) => store.threads.selectedThread);
   const loading = useSelector((store) => store.threads.fetchingThreadsLoading);
 
-  const [isOpen, setIsOpen] = useState(false);
   console.log(selected_thread);
+
+  const openDeleteModal = () => {
+    setDeleteOpenModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteOpenModal(false);
+  };
 
   const openModal = () => {
     setIsOpen(true);
@@ -77,8 +95,8 @@ const Inbox = () => {
               <div
                 className={`${theme === "light" && "text-black"} flex flex-col`}
               >
-                <p>{selected_thread?.fromName}</p>
-                <p>{selected_thread?.fromEmail}</p>
+                <p>{selected_thread[0]?.fromName}</p>
+                <p>{selected_thread[0]?.fromEmail}</p>
               </div>
 
               <div
@@ -86,6 +104,14 @@ const Inbox = () => {
                   theme == "dark" ? "text-black" : "text-white"
                 } flex font-light`}
               >
+                <div className="flex items-center">
+                  <button ref={deleteButtonRef} onClick={openDeleteModal}>
+                    <MdOutlineDeleteOutline
+                      className="text-red-400 mr-2 hover:cursor-pointer"
+                      size={26}
+                    />
+                  </button>
+                </div>
                 <div>
                   <select
                     className={`p-1 rounded-md mr-3  border-2 border-black/50 ${
@@ -132,6 +158,7 @@ const Inbox = () => {
 
             {selected_thread?.map((msg) => (
               <div
+                key={msg.id}
                 className={`${
                   theme == "light"
                     ? "bg-white border-2 text-black"
@@ -164,10 +191,12 @@ const Inbox = () => {
           </>
         )}
 
-        <div className="" onClick={openModal}>
+        <div className="fixed bottom-5" onClick={openModal}>
           <button
             ref={replyButtonRef}
-            className="bg-gradient-to-r from-blue-400 to-blue-800 flex px-8 py-2 rounded-md items-center gap-2"
+            className={`bg-gradient-to-r ${
+              theme === "light" && "text-white"
+            } from-blue-400 to-blue-800 flex px-8 py-2 rounded-md items-center gap-2`}
           >
             <MdOutlineReply /> Reply
           </button>
@@ -177,6 +206,8 @@ const Inbox = () => {
           <ReplyModal isOpen={isOpen} onClose={closeModal} />
         </div>
       </div>
+
+      <DeleteModal isOpen={deleteModalOpen} onClose={closeDeleteModal} />
 
       <InboxRightSidebar />
     </div>

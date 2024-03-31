@@ -4,10 +4,17 @@ import { ThemeContext } from "../Context/ThemeContext";
 
 const HomePage = () => {
   const { theme, setTheme } = useContext(ThemeContext);
+  const currentUrl = window.location.href;
+
+  const url = new URL(currentUrl);
+
+  const token = url.searchParams.get("token");
+
+  console.log(token);
 
   return (
     <div
-      className={`flex justify-center items-center w-100% h-full w-full flex-col ${
+      className={`flex justify-center items-center h-[90vh] w-full ${
         theme === "dark" ? "bg-black text-white" : "bg-white text-black"
       }`}
     >

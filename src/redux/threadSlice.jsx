@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   threads: [],
   fetchingThreadsLoading: false,
-  selectedThread: null,
+  selectedThread: [],
 };
 
 const threadsSlice = createSlice({

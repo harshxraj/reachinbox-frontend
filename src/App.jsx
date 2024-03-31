@@ -12,6 +12,7 @@ import {
   setThreads,
   setThreadsLoading,
 } from "./redux/threadSlice";
+import Login from "./pages/Login";
 
 function App() {
   const loading = useSelector((store) => store.threads.fetchingThreadsLoading);
@@ -52,6 +53,7 @@ function App() {
   return (
     <Layout>
       <Routes>
+        <Route path="/login" element={<Login />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/messages" element={<Inbox />} />
         <Route path="/messages/:thread_id" element={<Thread />} />

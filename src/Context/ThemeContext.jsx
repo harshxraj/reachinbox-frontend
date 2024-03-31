@@ -3,7 +3,8 @@ import React, { createContext, useState } from "react";
 export const ThemeContext = createContext();
 
 const ThemeContextProvider = ({ children }) => {
-  const [theme, setTheme] = useState(localStorage.getItem("onebox-theme"));
+  const userTheme = localStorage.getItem("onebox-theme") || "dark";
+  const [theme, setTheme] = useState(userTheme);
 
   const changeTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));

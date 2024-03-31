@@ -3,58 +3,105 @@ import { ThemeContext } from "../Context/ThemeContext";
 import { AiOutlineClose } from "react-icons/ai";
 import { IoMdCode } from "react-icons/io";
 import { IoMdFlash } from "react-icons/io";
+import { IoIosArrowDropdown } from "react-icons/io";
 import { FaEye, FaSmile } from "react-icons/fa";
 import { MdInsertLink, MdInsertPhoto, MdOutlinePerson } from "react-icons/md";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import { toast, Toaster } from "react-hot-toast";
+import axios from "axios";
 
 const ReplyModal = ({ isOpen, onClose }) => {
   const { theme, setTheme } = useContext(ThemeContext);
+  const selected_thread = useSelector((store) => store.threads.selectedThread);
 
-  const [priority, setPriority] = useState("");
-  const [task, setTask] = useState({
-    title: "",
-    description: "",
-    priority: "",
-    status: "pending",
+  const [email, setEmail] = useState({
+    subject: "",
+    body: "",
   });
-
-  useEffect(() => {
-    setTask((prevTask) => ({
-      ...prevTask,
-      priority: priority,
-    }));
-  }, [priority]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setTask({ ...task, [name]: value });
+    setEmail({ ...email, [name]: value });
   };
 
-  const handleSubmit = () => {};
+  const [body, setBody] = useState("");
+  const [preview, setPreview] = useState(false);
+  console.log(email);
+
+  const togglePreview = () => {
+    setPreview(!preview);
+  };
+
+  const bodyData = {
+    toName: "Mitrajit",
+    to: selected_thread[0]?.toEmail,
+    from: selected_thread[0]?.fromEmail,
+    fromName: selected_thread[0]?.fromName,
+    subject: email.subject,
+    body: email.body,
+    references: [
+      "<dea5a0c2-336f-1dc3-4994-191a0ad3891a@gmail.com>",
+      "<CAN5Dvwu24av80BmEg9ZVDWaP2+hTOrBQn9KhjfFkZZX_Do88FA@mail.gmail.com>",
+      "<CAN5DvwuzPAhoBEpQGRUOFqZF5erXc=B98Ew_5zbHF5dmeKWZMQ@mail.gmail.com>",
+      "<a1383d57-fdee-60c0-d46f-6bc440409e84@gmail.com>",
+    ],
+    inReplyTo: "<a1383d57-fdee-60c0-d46f-6bc440409e84@gmail.com>",
+  };
+
+  const handleReply = async () => {
+    try {
+      var x = toast.loading("Sending");
+      const response = await axios.post(
+        `https://hiring.reachinbox.xyz/api/v1/onebox/reply/${selected_thread[0]?.threadId}`,
+        bodyData,
+        {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_TOKEN}`,
+          },
+        }
+      );
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+      toast.error(err.message);
+    } finally {
+      toast.dismiss(x);
+    }
+  };
 
   return (
     <>
       {isOpen && (
         <div className="fixed inset-0 z-10 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none">
+          <Toaster />
           <div className="fixed inset-0 transition-opacity bg-black opacity-50"></div>
           <motion.div
-            className={`relative z-20 ${
-              theme === "dark" ? "bg-[#1f1f1f]" : "bg-white"
-            } rounded-lg w-[810px]`}
+            className={`relative top-14 -right-9 z-20 ${
+              theme === "dark"
+                ? "bg-[#141517] text-white"
+                : "text-slate-800 bg-white"
+            } rounded-lg w-[830px]`}
             initial={{ opacity: 0, translateX: "-100%", translateY: "100%" }}
             animate={{ opacity: 1, translateX: "0%", translateY: "0%" }}
             transition={{ duration: 0.2 }}
           >
             <button
               onClick={onClose}
-              className="absolute top-0 right-0 p-4 text-gray-500 hover:text-gray-700"
+              className={`absolute top-0 right-0 p-4 ${
+                theme === "light" ? "text-slate-800" : "text-gray-200"
+              } hover:text-gray-700`}
             >
               <AiOutlineClose />
             </button>
-            <div className="flex items-center bg-slate-800 p-3 rounded-md pl-8">
-              <h1 className="rounded-lg text-center font-light text-sm text-white">
-                Reply
-              </h1>
+            <div
+              className={`flex items-center ${
+                theme === "dark"
+                  ? "bg-[#23272c]"
+                  : "bg-purple-100 text-black border-b"
+              } p-3 rounded-md pl-8`}
+            >
+              <h1 className=" text-center font-light text-xl">Reply</h1>
             </div>
 
             <motion.div
@@ -63,12 +110,13 @@ const ReplyModal = ({ isOpen, onClose }) => {
               transition={{ duration: 0.3, delay: 0.1 }}
               className="flex pl-8 items-center gap-4 py-1 pt-2"
             >
-              <label>To: </label>
+              <label className="text-slate-500">To: </label>
               <input
                 type="text"
-                className="w-full p-1 bg-transparent focus:border-transparent focus:border-none focus:outline-none"
+                className="font-light w-full p-1 bg-transparent focus:border-transparent focus:border-none focus:outline-none"
                 onChange={handleChange}
                 name="to"
+                value={selected_thread[0]?.toEmail}
               />
             </motion.div>
 
@@ -84,12 +132,13 @@ const ReplyModal = ({ isOpen, onClose }) => {
               transition={{ duration: 0.3, delay: 0.1 }}
               className="flex pl-8 items-center gap-4 py-1 pt-2"
             >
-              <label>From: </label>
+              <label className="text-slate-500">From: </label>
               <input
                 type="text"
-                className="w-full p-1 bg-transparent focus:border-transparent focus:border-none focus:outline-none"
+                className="font-light w-full p-1 bg-transparent focus:border-transparent focus:border-none focus:outline-none"
                 onChange={handleChange}
                 name="from"
+                value={selected_thread[0]?.fromEmail}
               />
             </motion.div>
 
@@ -104,13 +153,13 @@ const ReplyModal = ({ isOpen, onClose }) => {
               animate={{ opacity: 1, translateY: "0%" }}
               transition={{ duration: 0.3, delay: 0.1 }}
             >
-              <label>Subject: </label>
+              <label className="text-slate-500">Subject: </label>
               <input
                 type="text"
-                className="w-full p-1 bg-transparent focus:outline-none focus:ring-0"
+                className="font-light w-full p-1 bg-transparent focus:outline-none focus:ring-0"
+                name="subject"
+                value={email.subject}
                 onChange={handleChange}
-                name="from"
-                value={"fsdfkl"}
               />
             </motion.div>
 
@@ -126,14 +175,29 @@ const ReplyModal = ({ isOpen, onClose }) => {
               transition={{ duration: 0.3, delay: 0.1 }}
               className="flex pl-8 items-center gap-4 py-1 pt-2"
             >
-              <textarea
-                type="text"
-                className="w-full p-1 bg-transparent focus:outline-none focus:ring-0 col-30 resize-none"
-                onChange={handleChange}
-                name="from"
-                placeholder="Body"
-                style={{ height: "300px" }}
-              />
+              <div className="h-[300px]">
+                {preview ? (
+                  <div
+                    className={`${
+                      theme == "light"
+                        ? "bg-gray-200 text-slate-700 font-light"
+                        : "bg-black/50"
+                    } w-[780px] p-2 rounded-md h-full text-green-100`}
+                  >
+                    {email.body}
+                  </div>
+                ) : (
+                  <textarea
+                    type="text"
+                    className="w-full bg-transparent focus:outline-none focus:ring-0 col-30 resize-none"
+                    name="body"
+                    placeholder="Body"
+                    style={{ height: "300px" }}
+                    value={email.body}
+                    onChange={handleChange}
+                  />
+                )}
+              </div>
             </motion.div>
 
             <hr
@@ -145,8 +209,14 @@ const ReplyModal = ({ isOpen, onClose }) => {
             />
 
             <div className="pl-8 mt-2 flex items-center gap-2 pb-3">
-              <button className="bg-blue-600 px-10 py-2 rounded-md">
-                Send
+              <button
+                onClick={handleReply}
+                className={`bg-gradient-to-r ${
+                  theme === "light" && "text-white"
+                } from-blue-400 to-blue-800 flex px-8 py-2 rounded-md items-center gap-2`}
+              >
+                Reply
+                <IoIosArrowDropdown />
               </button>
 
               <div
@@ -159,9 +229,10 @@ const ReplyModal = ({ isOpen, onClose }) => {
               </div>
 
               <div
-                className={`flex gap-2 ${
+                className={`flex gap-2 hover:cursor-pointer ${
                   theme == "dark" ? "text-slate-300" : "text-slate-800"
                 } items-center ml-3`}
+                onClick={togglePreview}
               >
                 <FaEye size={20} />
                 Preview Email
