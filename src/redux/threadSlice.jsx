@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  token: localStorage.getItem("reachinbox-frontend-token1234") || null,
   threads: [],
   fetchingThreadsLoading: false,
   selectedThread: [],
@@ -19,10 +20,14 @@ const threadsSlice = createSlice({
     setThreadsLoading: (state, { payload }) => {
       state.fetchingThreadsLoading = payload;
     },
+    setToken: (state, { payload }) => {
+      state.token = payload;
+      localStorage.setItem("reachinbox-frontend-token1234", payload);
+    },
   },
 });
 
-export const { setThreads, setSelectedThread, setThreadsLoading } =
+export const { setThreads, setSelectedThread, setThreadsLoading, setToken } =
   threadsSlice.actions;
 
 export default threadsSlice.reducer;

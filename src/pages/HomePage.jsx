@@ -1,16 +1,25 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { IoMdMailUnread } from "react-icons/io";
 import { ThemeContext } from "../Context/ThemeContext";
+import { useDispatch } from "react-redux";
+import { setToken } from "../redux/threadSlice";
 
 const HomePage = () => {
   const { theme, setTheme } = useContext(ThemeContext);
+  const dispatch = useDispatch();
+
   const currentUrl = window.location.href;
-
   const url = new URL(currentUrl);
-
   const token = url.searchParams.get("token");
 
-  console.log(token);
+  useEffect(() => {
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const token = url.searchParams.get("token");
+    console.log("TOEk, ", token);
+
+    dispatch(setToken(token));
+  }, [dispatch]);
 
   return (
     <div

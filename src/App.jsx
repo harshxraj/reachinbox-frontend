@@ -6,54 +6,37 @@ import Inbox from "./pages/Inbox";
 import Thread from "./pages/Thread";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import {
-  setSelectedThread,
-  setThreads,
-  setThreadsLoading,
-} from "./redux/threadSlice";
 import Login from "./pages/Login";
-import { FaInbox } from "react-icons/fa";
+import { setToken } from "./redux/threadSlice";
 
 function App() {
-  const loading = useSelector((store) => store.threads.fetchingThreadsLoading);
-  // const fetchAllThreads = async () => {
-  //   try {
-  //     dispatch(setThreadsLoading(true));
-  //     const response = await axios.get(
-  //       "https://hiring.reachinbox.xyz/api/v1/onebox/list",
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${import.meta.env.VITE_TOKEN}`,
-  //         },
-  //       }
-  //     );
-  //     console.log(response?.data?.data);
-  //     dispatch(setThreads(response?.data?.data));
-
-  //     const firstMsg = await axios.get(
-  //       `https://hiring.reachinbox.xyz/api/v1/onebox/messages/${response?.data?.data[0].threadId}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${import.meta.env.VITE_TOKEN}`,
-  //         },
-  //       }
-  //     );
-  //     dispatch(setSelectedThread(firstMsg?.data?.data));
-  //   } catch (err) {
-  //     console.log(err);
-  //   } finally {
-  //     dispatch(setThreadsLoading(false));
-  //   }
-  // };
-  // const dispatch = useDispatch();
-
+  const dispatch = useDispatch();
   // useEffect(() => {
-  //   fetchAllThreads();
+  //   const currentUrl = window.location.href;
+  //   const url = new URL(currentUrl);
+  //   const token = url.searchParams.get("token");
+  //   console.log("TOEk, ", token);
+
+  //   dispatch(setToken(token));
   // }, [dispatch]);
+
+  const token = useSelector((store) => store.threads.token);
+  console.log("token", token);
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/login" />} />
+      {/* <Route path="/" element={<Navigate to="/login" />} /> */}
+      <Route
+        path="/"
+        element={
+          token ? (
+            <Layout>
+              <HomePage />
+            </Layout>
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
       <Route path="/login" element={<Login />} />
       <Route
         path="/home"
