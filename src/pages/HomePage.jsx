@@ -14,7 +14,7 @@ const HomePage = () => {
 
   return (
     <div
-      className={`flex justify-center items-center h-[90vh] w-full ${
+      className={`flex justify-center items-center h-[92vh] w-full ${
         theme === "dark" ? "bg-black text-white" : "bg-white text-black"
       }`}
     >

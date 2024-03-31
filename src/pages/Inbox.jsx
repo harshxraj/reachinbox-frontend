@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BsThreeDots } from "react-icons/bs";
 import { MdOutlineReply } from "react-icons/md";
 import { MdOutlineDeleteOutline } from "react-icons/md";
@@ -10,6 +10,12 @@ import InboxRightSidebar from "../components/InboxRightSidebar";
 import { getFullDayWithTime } from "../utils/getDate";
 import ReplyModal from "../components/ReplyModal";
 import DeleteModal from "../components/DeleteModal";
+import {
+  setSelectedThread,
+  setThreads,
+  setThreadsLoading,
+} from "../redux/threadSlice";
+import axios from "axios";
 
 const Inbox = () => {
   const replyButtonRef = useRef(null);
@@ -17,6 +23,41 @@ const Inbox = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [deleteModalOpen, setDeleteOpenModal] = useState(false);
+
+  const fetchAllThreads = async () => {
+    try {
+      dispatch(setThreadsLoading(true));
+      const response = await axios.get(
+        "https://hiring.reachinbox.xyz/api/v1/onebox/list",
+        {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_TOKEN}`,
+          },
+        }
+      );
+      console.log(response?.data?.data);
+      dispatch(setThreads(response?.data?.data));
+
+      const firstMsg = await axios.get(
+        `https://hiring.reachinbox.xyz/api/v1/onebox/messages/${response?.data?.data[0].threadId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_TOKEN}`,
+          },
+        }
+      );
+      dispatch(setSelectedThread(firstMsg?.data?.data));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      dispatch(setThreadsLoading(false));
+    }
+  };
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetchAllThreads();
+  }, [dispatch]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {

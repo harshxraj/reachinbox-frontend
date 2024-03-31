@@ -17,8 +17,8 @@ const Sidebar = () => {
         theme == "light" ? "bg-purple-100" : "bg-[#101113]"
       } text-white w-14 fixed top-0 left-0 h-[100vh] flex flex-col justify-between py-4 items-center`}
     >
-      <div>
-        <img src="./logo.jpg" alt="" className="w-10" />
+      <div className="border-2 border-black">
+        <img src="./logo.svg" alt="" className="w-8" />
       </div>
 
       <ul
@@ -27,12 +27,15 @@ const Sidebar = () => {
         } gap-10 justify-center items-center `}
       >
         <NavLink
-          to="/"
+          to="/home"
           className={({ isActive, isPending }) =>
             isPending
               ? "pending"
               : isActive
-              ? "text-black bg-gray-100 rounded-sm "
+              ? `text-black bg-gray-100 rounded-sm ${
+                  theme === "light" &&
+                  "border-black border text-white bg-slate-900 rounded"
+                }`
               : ""
           }
         >
@@ -47,7 +50,10 @@ const Sidebar = () => {
             isPending
               ? "pending"
               : isActive
-              ? "text-black bg-gray-100 rounded-sm "
+              ? `text-black bg-gray-100 rounded-sm ${
+                  theme === "light" &&
+                  "border-black border text-white bg-slate-900 rounded"
+                }`
               : ""
           }
         >
@@ -62,7 +68,10 @@ const Sidebar = () => {
             isPending
               ? "pending"
               : isActive
-              ? "text-black bg-gray-100 rounded-sm "
+              ? `text-black bg-gray-100 rounded-sm ${
+                  theme === "light" &&
+                  "border-black border text-white bg-slate-900 rounded"
+                }`
               : ""
           }
         >
@@ -77,7 +86,10 @@ const Sidebar = () => {
             isPending
               ? "pending"
               : isActive
-              ? "text-black bg-gray-100 rounded-sm "
+              ? `text-black bg-gray-100 rounded-sm ${
+                  theme === "light" &&
+                  "border-black border text-white bg-slate-900 rounded"
+                }`
               : ""
           }
         >
@@ -92,7 +104,10 @@ const Sidebar = () => {
             isPending
               ? "pending"
               : isActive
-              ? "text-black bg-gray-100 rounded-sm "
+              ? `text-black bg-gray-100 rounded-sm ${
+                  theme === "light" &&
+                  "border-black border text-white bg-slate-900 rounded"
+                }`
               : ""
           }
         >
@@ -107,7 +122,10 @@ const Sidebar = () => {
             isPending
               ? "pending"
               : isActive
-              ? "text-black bg-gray-100 rounded-sm "
+              ? `text-black bg-gray-100 rounded-sm ${
+                  theme === "light" &&
+                  "border-black border text-white bg-slate-900 rounded"
+                }`
               : ""
           }
         >
@@ -122,7 +140,10 @@ const Sidebar = () => {
             isPending
               ? "pending"
               : isActive
-              ? "text-black bg-gray-100 rounded-sm "
+              ? `text-black bg-gray-100 rounded-sm ${
+                  theme === "light" &&
+                  "border-black border text-white bg-slate-900 rounded"
+                }`
               : ""
           }
         >
@@ -133,7 +154,7 @@ const Sidebar = () => {
       </ul>
 
       <div className="bg-green-900 size-10 rounded-full flex items-center justify-center">
-        SR
+        AS
       </div>
     </div>
   );
