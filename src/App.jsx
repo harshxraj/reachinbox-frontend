@@ -65,7 +65,7 @@ function App() {
         path="*"
         element={
           <Layout>
-            <div className="relative h-screen">
+            <div className="relative h-full">
               <div className="flex border-l-4 h-[432px] ml-20 border-white justify-center items-center gap-3"></div>
               <div className="absolute top-[428px] left-8 flex flex-col items-center">
                 <h1 className="text-white absolute -top-14 left-1">Go here</h1>
