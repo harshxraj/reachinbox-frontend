@@ -11,14 +11,13 @@ import { setToken } from "./redux/threadSlice";
 
 function App() {
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   const currentUrl = window.location.href;
-  //   const url = new URL(currentUrl);
-  //   const token = url.searchParams.get("token");
-  //   console.log("TOEk, ", token);
+  useEffect(() => {
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const token = url.searchParams.get("token");
 
-  //   dispatch(setToken(token));
-  // }, [dispatch]);
+    dispatch(setToken(token));
+  }, [dispatch]);
 
   const token = useSelector((store) => store.threads.token);
   console.log("token", token);
