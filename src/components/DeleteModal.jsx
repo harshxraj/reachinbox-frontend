@@ -3,7 +3,8 @@ import { useContext } from "react";
 import { ThemeContext } from "../Context/ThemeContext";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { setThreads } from "../redux/threadSlice";
+import { setSelectedThread, setThreads } from "../redux/threadSlice";
+import { toast, Toaster } from "react-hot-toast";
 
 const DeleteModal = ({ isOpen, onClose }) => {
   const { theme } = useContext(ThemeContext);
@@ -13,6 +14,7 @@ const DeleteModal = ({ isOpen, onClose }) => {
   const handleDelete = async () => {
     console.log("fsd", selected_thread[0]?.threadId);
     try {
+      var x = toast.loading("Thread deleting...");
       const response = await axios.delete(
         `https://hiring.reachinbox.xyz/api/v1/onebox/messages/${selected_thread[0]?.threadId}`,
         {
@@ -29,15 +31,35 @@ const DeleteModal = ({ isOpen, onClose }) => {
           },
         }
       );
-      console.log(response?.data?.data);
-      //   dispatch(setThreads(response?.data?.data));
+      console.log("updatedThred", getUpdatedThreads?.data?.data);
+      dispatch(setThreads(getUpdatedThreads?.data?.data));
+
+      if (getUpdatedThreads?.data?.data?.length === 0) {
+        dispatch(setSelectedThread([]));
+      }
+
+      if (getUpdatedThreads?.data?.data?.length > 0) {
+        const firstMsg = await axios.get(
+          `https://hiring.reachinbox.xyz/api/v1/onebox/messages/${getUpdatedThreads?.data?.data[0]?.threadId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${import.meta.env.VITE_TOKEN}`,
+            },
+          }
+        );
+        dispatch(setSelectedThread(firstMsg?.data?.data));
+      }
 
       onClose();
-      window.location.reload();
+      // window.location.reload();
 
       console.log(response.data);
+      // toast.success("Thread deleted!");
     } catch (err) {
       console.log(err);
+      toast.error(err.message);
+    } finally {
+      toast.dismiss(x);
     }
   };
 
@@ -45,6 +67,7 @@ const DeleteModal = ({ isOpen, onClose }) => {
     <>
       {isOpen && (
         <>
+          <Toaster />
           <div className="fixed inset-0 z-10 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none">
             <div className="fixed inset-0 transition-opacity bg-[#4b4c4d] opacity-50"></div>
             <motion.div

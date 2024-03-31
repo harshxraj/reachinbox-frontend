@@ -80,6 +80,7 @@ const Inbox = () => {
   }, [isOpen]);
   const { theme, setTheme } = useContext(ThemeContext);
   const selected_thread = useSelector((store) => store.threads.selectedThread);
+  console.log("Afer delet", selected_thread);
   const loading = useSelector((store) => store.threads.fetchingThreadsLoading);
 
   console.log(selected_thread);
@@ -146,12 +147,14 @@ const Inbox = () => {
                 } flex font-light`}
               >
                 <div className="flex items-center">
-                  <button ref={deleteButtonRef} onClick={openDeleteModal}>
-                    <MdOutlineDeleteOutline
-                      className="text-red-400 mr-2 hover:cursor-pointer"
-                      size={26}
-                    />
-                  </button>
+                  {selected_thread.length > 0 && (
+                    <button ref={deleteButtonRef} onClick={openDeleteModal}>
+                      <MdOutlineDeleteOutline
+                        className="text-red-400 mr-2 hover:cursor-pointer"
+                        size={26}
+                      />
+                    </button>
+                  )}
                 </div>
                 <div>
                   <select
@@ -197,36 +200,47 @@ const Inbox = () => {
               }  h-2 border-t-2`}
             />
 
-            {selected_thread?.map((msg) => (
+            {selected_thread.length == 0 && (
               <div
-                key={msg.id}
                 className={`${
-                  theme == "light"
-                    ? "bg-white border-2 text-black"
-                    : "bg-[#141517]"
-                } p-4 mt-2 rounded-md`}
+                  theme === "light" && "text-slate-600"
+                } text-2xl flex justify-center border border-black/40 rounded-md`}
               >
-                <div className="flex justify-between">
-                  <h1 className="font-medium text-lg">{msg?.subject}</h1>
-                  <p className="text-sm text-slate-600">
-                    {getFullDayWithTime(msg?.sentAt)}
-                  </p>
-                </div>
-                <div className="flex gap-4 text-slate-500 mt-2 mb-2">
-                  <p>From: {msg?.fromEmail}</p>
-                  <p>CC: {msg?.cc}</p>
-                </div>
-
-                <p className="flex gap-4 mb-6 text-slate-500">
-                  To: {msg?.toEmail}
-                </p>
-
-                <div
-                  className="text-sm font-light"
-                  dangerouslySetInnerHTML={{ __html: msg?.body }}
-                />
+                <h1>No Threads found!</h1>
               </div>
-            ))}
+            )}
+
+            {selected_thread.length > 0 &&
+              selected_thread?.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`${
+                    theme == "light"
+                      ? "bg-white border-2 text-black"
+                      : "bg-[#141517]"
+                  } p-4 mt-2 rounded-md`}
+                >
+                  <div className="flex justify-between">
+                    <h1 className="font-medium text-lg">{msg?.subject}</h1>
+                    <p className="text-sm text-slate-600">
+                      {getFullDayWithTime(msg?.sentAt)}
+                    </p>
+                  </div>
+                  <div className="flex gap-4 text-slate-500 mt-2 mb-2">
+                    <p>From: {msg?.fromEmail}</p>
+                    <p>CC: {msg?.cc}</p>
+                  </div>
+
+                  <p className="flex gap-4 mb-6 text-slate-500">
+                    To: {msg?.toEmail}
+                  </p>
+
+                  <div
+                    className="text-sm font-light"
+                    dangerouslySetInnerHTML={{ __html: msg?.body }}
+                  />
+                </div>
+              ))}
 
             {}
           </>
