@@ -7,11 +7,7 @@ ReachInbox is an AI-driven platform designed to transform cold outreach for busi
 Frontend
 
 ## Deployed App
-Frontend: [https://reachinbox-frontend.vercel.app/](https://reachinbox-frontend.vercel.app/)  
-
-## Video Walkthrough of the Project
-
-## Video Walkthrough of the Codebase
+Link: [https://reachinbox-frontend.vercel.app/](https://reachinbox-frontend.vercel.app/)  
 
 ## Features
 - Seamless login page implementation with provided design.
