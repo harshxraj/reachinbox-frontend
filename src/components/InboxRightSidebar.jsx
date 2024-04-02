@@ -168,7 +168,7 @@ const InboxRightSidebar = () => {
                   theme == "dark" ? "text-gray-200" : "text-slate-800"
                 } flex flex-col gap-2 font-light`}
               >
-                <div>Step1: Email</div>
+                <div>Step 3: Email</div>
                 <div className="flex items-center ">
                   <BsFillEnvelopeOpenFill className="mr-2 text-yellow-500" />
                   <p>Opened: 5th Feb</p>

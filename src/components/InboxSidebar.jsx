@@ -159,7 +159,7 @@ const InboxSidebar = () => {
       <hr
         className={`mt-3 ${
           theme === "dark" ? "border-white/30" : "border-black/30"
-        }  h-2 border-t-2`}
+        }   border-t-2`}
       />
 
       {/* Thread */}
@@ -189,7 +189,7 @@ const InboxSidebar = () => {
               <div
                 key={thread.id}
                 className={`border-b-2 ${
-                  theme === "dark" ? "border-white/50 pt-2" : "border-black/50"
+                  theme === "dark" ? "border-white/50" : "border-black/50"
                 }`}
               >
                 <ThreadCard

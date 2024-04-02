@@ -25,12 +25,20 @@ const ReplyModal = ({ isOpen, onClose }) => {
     setEmail({ ...email, [name]: value });
   };
 
+  const handleVariables = (value) => {};
+
   const [body, setBody] = useState("");
   const [preview, setPreview] = useState(false);
+  const [showVariables, setShowVariables] = useState(false);
+
   console.log(email);
 
   const togglePreview = () => {
     setPreview(!preview);
+  };
+
+  const toggleVaiables = () => {
+    setShowVariables((prev) => !prev);
   };
 
   const bodyData = {
@@ -178,7 +186,7 @@ const ReplyModal = ({ isOpen, onClose }) => {
               <div className="h-[300px]">
                 {preview ? (
                   <div
-                    className={`${
+                    className={`break-words ${
                       theme == "light"
                         ? "bg-gray-200 text-slate-700 font-light"
                         : "bg-black/50"
@@ -195,6 +203,7 @@ const ReplyModal = ({ isOpen, onClose }) => {
                     style={{ height: "300px" }}
                     value={email.body}
                     onChange={handleChange}
+                    cols={95}
                   />
                 )}
               </div>
@@ -220,18 +229,81 @@ const ReplyModal = ({ isOpen, onClose }) => {
               </button>
 
               <div
-                className={`flex gap-2 ${
+                onClick={toggleVaiables}
+                className={`px-2 rounded-md flex gap-2 relative hover:cursor-pointer ${
                   theme == "dark" ? "text-slate-300" : "text-slate-800"
+                } ${
+                  showVariables && "bg-gray-600 text-white"
                 } items-center ml-3`}
               >
+                {showVariables && (
+                  <div
+                    className={`${
+                      theme == "light" && "bg-gray-600"
+                    } absolute flex flex-col gap-1 -top-[137px] right-0 w-full h-[135px] bg-slate-900 rounded-md p-2`}
+                  >
+                    <div
+                      onClick={() =>
+                        setEmail({
+                          ...email,
+                          body:
+                            email.body +
+                            " " +
+                            selected_thread[0]?.fromName +
+                            " ",
+                        })
+                      }
+                    >
+                      FromName
+                    </div>
+                    <hr />
+                    <div
+                      onClick={() =>
+                        setEmail({
+                          ...email,
+                          body:
+                            email.body +
+                            " " +
+                            selected_thread[0]?.fromEmail +
+                            " ",
+                        })
+                      }
+                    >
+                      FromEmail
+                    </div>
+                    <hr />
+                    <div
+                      onClick={() =>
+                        setEmail({
+                          ...email,
+                          body:
+                            email.body + " " + selected_thread[0]?.toName + " ",
+                        })
+                      }
+                    >
+                      ToName
+                    </div>
+                    <hr />
+                    <div
+                      onClick={() =>
+                        setEmail({
+                          ...email,
+                          body: email.body + selected_thread[0]?.toEmail + " ",
+                        })
+                      }
+                    >
+                      ToEmail
+                    </div>
+                  </div>
+                )}
                 <IoMdFlash size={20} />
                 Variables
               </div>
 
               <div
-                className={`flex gap-2 hover:cursor-pointer ${
+                className={`flex gap-2 px-2 rounded-md hover:cursor-pointer ${
                   theme == "dark" ? "text-slate-300" : "text-slate-800"
-                } items-center ml-3`}
+                } ${preview && "bg-gray-600 text-white"} items-center ml-3`}
                 onClick={togglePreview}
               >
                 <FaEye size={20} />

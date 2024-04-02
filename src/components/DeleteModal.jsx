@@ -51,8 +51,6 @@ const DeleteModal = ({ isOpen, onClose }) => {
       }
 
       onClose();
-      // window.location.reload();
-
       console.log(response.data);
       // toast.success("Thread deleted!");
     } catch (err) {

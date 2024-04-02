@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Layout from "./components/Layout";
 import Inbox from "./pages/Inbox";
-import Thread from "./pages/Thread";
+// import Thread from "./pages/Thread";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Login from "./pages/Login";
@@ -55,11 +55,7 @@ function App() {
       />
       <Route
         path="/messages/:thread_id"
-        element={
-          <Layout>
-            <Thread />
-          </Layout>
-        }
+        element={<Layout>{/* <Thread /> */}</Layout>}
       />
       <Route
         path="*"

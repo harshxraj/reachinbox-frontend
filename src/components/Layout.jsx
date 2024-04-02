@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import Example, { SliderToggle } from "./ThemToggleBtn";
+import { IoIosArrowDown } from "react-icons/io";
 import { ThemeContext } from "../Context/ThemeContext";
 import Sidebar from "./Sidebar";
 
@@ -22,7 +23,18 @@ const Layout = ({ children }) => {
           >
             Onebox
           </h1>
-          <SliderToggle />
+
+          <div className="flex items-center gap-3">
+            <SliderToggle />
+            <div
+              className={`${
+                theme == "light" && "text-slate-900"
+              } flex items-center gap-2`}
+            >
+              Tim's Workspace
+              <IoIosArrowDown />
+            </div>
+          </div>
         </div>
         <div className="flex-grow ml-12">{children}</div>
       </div>
